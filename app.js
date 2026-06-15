@@ -105,11 +105,11 @@
     });
   });
 
-  /* ---- contact form -> emails LMK via FormSubmit (no page reload) ---- */
+  /* ---- contact form -> emails LMK via FormSubmit, with native fallback ---- */
   var form = document.getElementById('lmkForm');
   if (form) {
     var statusEl = document.getElementById('formStatus');
-    var FS_ENDPOINT = 'https://formsubmit.co/ajax/lmkwhat2026@gmail.com';
+    var FS_AJAX = 'https://formsubmit.co/ajax/lmkwhat2026@gmail.com';
 
     function setStatus(msg, ok) {
       if (!statusEl) return;
@@ -120,8 +120,7 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      // honeypot: silently ignore bots
-      if (form._honey && form._honey.value) return;
+      if (form._honey && form._honey.value) return; // honeypot
 
       var btn = form.querySelector('button[type="submit"]');
       var label = btn.textContent;
@@ -129,26 +128,38 @@
       btn.textContent = 'Sending…';
       setStatus('Sending your message…', true);
 
-      fetch(FS_ENDPOINT, {
+      var settled = false;
+      // If the AJAX request is blocked (ad blocker) or too slow,
+      // fall back to a normal form submission so the message still sends.
+      function nativeFallback() {
+        if (settled) return;
+        settled = true;
+        form.submit(); // full-page POST to FormSubmit (bypasses fetch/XHR blockers)
+      }
+      var timer = setTimeout(nativeFallback, 7000);
+
+      fetch(FS_AJAX, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: new FormData(form)
       })
         .then(function (r) { return r.json(); })
         .then(function (data) {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
           if (data && (data.success === 'true' || data.success === true)) {
             setStatus("Thanks — your message is on its way. We'll reply fast.", true);
             form.reset();
           } else {
-            setStatus("Almost there: check the LMK inbox (lmkwhat2026@gmail.com) and click the FormSubmit activation link once. After that, every message lands instantly.", true);
+            setStatus("Almost there — confirm the form once via the email in lmkwhat2026@gmail.com, then every message lands instantly.", true);
           }
-        })
-        .catch(function () {
-          setStatus('Connection issue — please email us directly at lmkwhat2026@gmail.com and we\'ll get right back to you.', false);
-        })
-        .then(function () {
           btn.disabled = false;
           btn.textContent = label;
+        })
+        .catch(function () {
+          clearTimeout(timer);
+          nativeFallback();
         });
     });
   }
