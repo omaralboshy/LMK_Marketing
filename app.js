@@ -45,24 +45,65 @@
     });
   }
 
-  /* ---- scroll-triggered reveals (Intersection Observer) ---- */
-  var reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !reduceMotion) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
-    reveals.forEach(function (el) { io.observe(el); });
-  } else {
-    reveals.forEach(function (el) { el.classList.add('in'); });
+  /* ---- scroll progress bar ---- */
+  var progress = document.getElementById('scrollProgress');
+  if (progress) {
+    function updateProgress() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (max > 0 ? (window.scrollY / max * 100) : 0) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
   }
 
-  /* ---- custom cursor ---- */
+  /* ---- scroll-triggered reveals (started after the preloader) ---- */
+  var reveals = document.querySelectorAll('.reveal');
+  var revealsStarted = false;
+  function startReveals() {
+    if (revealsStarted) return;
+    revealsStarted = true;
+    if ('IntersectionObserver' in window && !reduceMotion) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+      reveals.forEach(function (el) { io.observe(el); });
+    } else {
+      reveals.forEach(function (el) { el.classList.add('in'); });
+    }
+  }
+
+  /* ---- preloader: count up, then lift the curtain and reveal the site ---- */
+  (function preload() {
+    var pl = document.getElementById('preloader');
+    var fill = document.getElementById('plFill');
+    var count = document.getElementById('plCount');
+    var finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      startReveals();
+      if (!pl) return;
+      pl.classList.add('done');
+      setTimeout(function () { if (pl && pl.parentNode) pl.parentNode.removeChild(pl); }, 1100);
+    }
+    if (!pl || reduceMotion) { if (pl) pl.style.display = 'none'; finish(); return; }
+    var pct = 0;
+    var timer = setInterval(function () {
+      pct += Math.max(1, Math.round((100 - pct) * 0.07)) + Math.random() * 1.6;
+      if (pct >= 100) { pct = 100; clearInterval(timer); }
+      if (count) count.textContent = Math.floor(pct);
+      if (fill) fill.style.width = pct + '%';
+      if (pct >= 100) { setTimeout(finish, 350); }
+    }, 70);
+    setTimeout(function () { clearInterval(timer); finish(); }, 5000); // safety net
+  })();
+
+  /* ---- custom cursor + contextual labels ---- */
   var cursor = document.getElementById('cursor');
+  var curLabel = document.getElementById('curLabel');
   if (cursor && canHover && !reduceMotion) {
     var cx = window.innerWidth / 2, cy = window.innerHeight / 2, tx = cx, ty = cy;
     window.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; });
@@ -75,6 +116,14 @@
     document.querySelectorAll('a, button, [data-magnetic], input, textarea').forEach(function (el) {
       el.addEventListener('mouseenter', function () { cursor.classList.add('grow'); });
       el.addEventListener('mouseleave', function () { cursor.classList.remove('grow'); });
+    });
+    document.querySelectorAll('.platform').forEach(function (p) { p.setAttribute('data-cursor', 'View'); });
+    document.querySelectorAll('[data-cursor]').forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        if (curLabel) curLabel.textContent = el.getAttribute('data-cursor');
+        cursor.classList.add('labeled');
+      });
+      el.addEventListener('mouseleave', function () { cursor.classList.remove('labeled'); });
     });
   } else if (cursor) {
     cursor.style.display = 'none';
@@ -148,6 +197,57 @@
       });
     }
     window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  /* ---- kinetic marquee: auto-scrolls, speeds up + skews with scroll velocity ---- */
+  (function setupMarquee() {
+    var mq = document.getElementById('marqueeTrack');
+    if (!mq || reduceMotion) return;
+    mq.style.animation = 'none'; // JS drives it instead of the CSS fallback
+    var x = 0, half = 0, lastY = window.scrollY, vel = 0, skew = 0;
+    function measure() { half = mq.scrollWidth / 2; }
+    measure();
+    window.addEventListener('resize', measure);
+    window.addEventListener('scroll', function () { vel = window.scrollY - lastY; lastY = window.scrollY; }, { passive: true });
+    (function loop() {
+      var speed = 0.6 + Math.min(7, Math.abs(vel) * 0.22);
+      x -= speed;
+      if (half > 0 && -x >= half) x += half;
+      skew += (Math.max(-12, Math.min(12, vel * 0.5)) - skew) * 0.12;
+      mq.style.transform = 'translateX(' + x.toFixed(2) + 'px) skewX(' + skew.toFixed(2) + 'deg)';
+      vel *= 0.85;
+      requestAnimationFrame(loop);
+    })();
+  })();
+
+  /* ---- showreel lightbox ---- */
+  (function setupReel() {
+    var trigger = document.getElementById('reelTrigger');
+    var modal = document.getElementById('reelModal');
+    var video = document.getElementById('reelVideo');
+    var close = document.getElementById('reelClose');
+    var backdrop = document.getElementById('reelBackdrop');
+    if (!trigger || !modal || !video) return;
+    function open() {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('menu-open');
+      try { video.currentTime = 0; } catch (e) {}
+      video.muted = false;
+      var p = video.play(); if (p && p.catch) p.catch(function () {});
+    }
+    function shut() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('menu-open');
+      video.pause();
+    }
+    trigger.addEventListener('click', open);
+    if (close) close.addEventListener('click', shut);
+    if (backdrop) backdrop.addEventListener('click', shut);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('open')) shut();
+    });
   })();
 
   /* ---- contact form: native submit to FormSubmit (works on every device/browser) ---- */
