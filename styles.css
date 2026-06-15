@@ -246,7 +246,13 @@ section{position:relative;z-index:2}
 .c-key{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gray-dim)}
 .c-val{font-size:17px;font-weight:500;transition:color .3s}
 .c-row:hover .c-val{background:var(--chrome);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
-.contact-socials{display:flex;gap:12px;margin-top:34px}
+.wa-btn{display:inline-flex;align-items:center;gap:11px;margin-top:34px;font-weight:600;font-size:15px;letter-spacing:.02em;
+  color:var(--white);background:rgba(255,255,255,.04);border:1px solid var(--line);padding:15px 26px;border-radius:100px;
+  transition:transform .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.wa-btn svg{color:#25D366}
+.wa-btn:hover{background:#25D366;color:#0a0a0a;border-color:#25D366;transform:translateY(-2px);box-shadow:0 0 30px rgba(37,211,102,.3)}
+.wa-btn:hover svg{color:#0a0a0a}
+.contact-socials{display:flex;gap:12px;margin-top:28px}
 .contact-socials .soc{width:46px;height:46px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;
   color:var(--gray);transition:color .3s var(--ease),border-color .3s var(--ease),transform .3s var(--ease),background .3s var(--ease)}
 .contact-socials .soc:hover{color:#fff;border-color:rgba(255,255,255,.55);transform:translateY(-3px);background:rgba(255,255,255,.04)}

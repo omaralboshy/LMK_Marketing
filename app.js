@@ -105,62 +105,32 @@
     });
   });
 
-  /* ---- contact form -> emails LMK via FormSubmit, with native fallback ---- */
+  /* ---- contact form: native submit to FormSubmit (works on every device/browser) ---- */
   var form = document.getElementById('lmkForm');
-  if (form) {
-    var statusEl = document.getElementById('formStatus');
-    var FS_AJAX = 'https://formsubmit.co/ajax/lmkwhat2026@gmail.com';
+  var statusEl = document.getElementById('formStatus');
 
-    function setStatus(msg, ok) {
-      if (!statusEl) return;
-      statusEl.textContent = msg;
-      statusEl.hidden = false;
-      statusEl.className = 'form-status ' + (ok ? 'ok' : 'err');
+  function setStatus(msg, ok) {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    statusEl.hidden = false;
+    statusEl.className = 'form-status ' + (ok ? 'ok' : 'err');
+  }
+
+  // After FormSubmit sends the email it redirects back here with ?sent=1
+  if (statusEl && /[?&]sent=1/.test(location.search)) {
+    setStatus("Thanks — your message was sent. We'll reply fast.", true);
+    if (history.replaceState) {
+      history.replaceState(null, '', location.pathname + (location.hash || '#contact'));
     }
+  }
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (form._honey && form._honey.value) return; // honeypot
-
+  if (form) {
+    form.addEventListener('submit', function () {
       var btn = form.querySelector('button[type="submit"]');
-      var label = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-      setStatus('Sending your message…', true);
-
-      var settled = false;
-      // If the AJAX request is blocked (ad blocker) or too slow,
-      // fall back to a normal form submission so the message still sends.
-      function nativeFallback() {
-        if (settled) return;
-        settled = true;
-        form.submit(); // full-page POST to FormSubmit (bypasses fetch/XHR blockers)
-      }
-      var timer = setTimeout(nativeFallback, 7000);
-
-      fetch(FS_AJAX, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form)
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (settled) return;
-          settled = true;
-          clearTimeout(timer);
-          if (data && (data.success === 'true' || data.success === true)) {
-            setStatus("Thanks — your message is on its way. We'll reply fast.", true);
-            form.reset();
-          } else {
-            setStatus("Almost there — confirm the form once via the email in lmkwhat2026@gmail.com, then every message lands instantly.", true);
-          }
-          btn.disabled = false;
-          btn.textContent = label;
-        })
-        .catch(function () {
-          clearTimeout(timer);
-          nativeFallback();
-        });
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      // No preventDefault: the browser performs a normal POST to FormSubmit.
+      // This isn't affected by ad blockers / privacy extensions the way a
+      // background fetch is, so it sends reliably everywhere.
     });
   }
 })();
