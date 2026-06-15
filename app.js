@@ -109,7 +109,9 @@
   (function setupBgVideo() {
     var v1 = document.getElementById('bgv1');
     var v2 = document.getElementById('bgv2');
-    if (!v1 || !v2) return;
+    var l1 = document.getElementById('bgl1');
+    var l2 = document.getElementById('bgl2');
+    if (!v1 || !v2 || !l1 || !l2) return;
 
     // Respect data-saver / reduced-motion: keep the still poster frames, no playback.
     var conn = navigator.connection || {};
@@ -124,14 +126,14 @@
     function showSecond() {
       if (!loaded2) { loaded2 = true; v2.load(); }
       safePlay(v2);
-      v2.classList.add('is-active');
-      v1.classList.remove('is-active');
+      l2.classList.add('is-active');
+      l1.classList.remove('is-active');
       setTimeout(function () { if (current === 2) v1.pause(); }, 1300);
     }
     function showFirst() {
       safePlay(v1);
-      v1.classList.add('is-active');
-      v2.classList.remove('is-active');
+      l1.classList.add('is-active');
+      l2.classList.remove('is-active');
       setTimeout(function () { if (current === 1) v2.pause(); }, 1300);
     }
     function onScroll() {

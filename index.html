@@ -25,12 +25,18 @@
 
 <!-- background video: fixed behind everything, crossfades to the 2nd clip past the halfway point -->
 <div class="bg-video" aria-hidden="true">
-  <video class="bgv is-active" id="bgv1" muted loop playsinline preload="auto" poster="bg1-poster.jpg">
-    <source src="bg1.mp4" type="video/mp4">
-  </video>
-  <video class="bgv" id="bgv2" muted loop playsinline preload="none" poster="bg2-poster.jpg">
-    <source src="bg2.mp4" type="video/mp4">
-  </video>
+  <div class="bgv-layer is-active" id="bgl1">
+    <div class="bgv-fill" style="background-image:url('bg1-poster.jpg')"></div>
+    <video class="bgv" id="bgv1" muted loop playsinline preload="auto" poster="bg1-poster.jpg">
+      <source src="bg1.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="bgv-layer" id="bgl2">
+    <div class="bgv-fill" style="background-image:url('bg2-poster.jpg')"></div>
+    <video class="bgv" id="bgv2" muted loop playsinline preload="none" poster="bg2-poster.jpg">
+      <source src="bg2.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="bg-scrim"></div>
 </div>
 
