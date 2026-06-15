@@ -17,17 +17,31 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* ---- mobile menu ---- */
+  /* ---- mobile menu (full-screen overlay, works at any scroll position) ---- */
   var burger = document.getElementById('burger');
-  if (burger) {
-    burger.addEventListener('click', function () {
-      nav.classList.toggle('open');
-      nav.classList.toggle('mobile-open');
+  var mobileMenu = document.getElementById('mobileMenu');
+  if (burger && mobileMenu) {
+    function closeMenu() {
+      nav.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      burger.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+    function toggleMenu() {
+      var willOpen = !mobileMenu.classList.contains('open');
+      nav.classList.toggle('open', willOpen);
+      mobileMenu.classList.toggle('open', willOpen);
+      document.body.classList.toggle('menu-open', willOpen);
+      burger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      mobileMenu.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
+    }
+    burger.addEventListener('click', toggleMenu);
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeMenu);
     });
-    document.querySelectorAll('#navLinks a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        nav.classList.remove('open', 'mobile-open');
-      });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
     });
   }
 
@@ -113,7 +127,7 @@
       var label = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Sending…';
-      if (statusEl) statusEl.hidden = true;
+      setStatus('Sending your message…', true);
 
       fetch(FS_ENDPOINT, {
         method: 'POST',
@@ -126,12 +140,11 @@
             setStatus("Thanks — your message is on its way. We'll reply fast.", true);
             form.reset();
           } else {
-            // first-ever submit returns an activation notice
-            setStatus("Almost there — check the LMK inbox to confirm the form once. After that, messages arrive instantly.", true);
+            setStatus("Almost there: check the LMK inbox (lmkwhat2026@gmail.com) and click the FormSubmit activation link once. After that, every message lands instantly.", true);
           }
         })
         .catch(function () {
-          setStatus('Something went wrong. Please email us directly at lmkwhat2026@gmail.com', false);
+          setStatus('Connection issue — please email us directly at lmkwhat2026@gmail.com and we\'ll get right back to you.', false);
         })
         .then(function () {
           btn.disabled = false;
