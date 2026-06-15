@@ -23,6 +23,17 @@
 </head>
 <body>
 
+<!-- background video: fixed behind everything, crossfades to the 2nd clip past the halfway point -->
+<div class="bg-video" aria-hidden="true">
+  <video class="bgv is-active" id="bgv1" muted loop playsinline preload="auto" poster="bg1-poster.jpg">
+    <source src="bg1.mp4" type="video/mp4">
+  </video>
+  <video class="bgv" id="bgv2" muted loop playsinline preload="none" poster="bg2-poster.jpg">
+    <source src="bg2.mp4" type="video/mp4">
+  </video>
+  <div class="bg-scrim"></div>
+</div>
+
 <!-- grain + vignette overlays -->
 <div class="grain" aria-hidden="true"></div>
 <div class="vignette" aria-hidden="true"></div>

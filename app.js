@@ -105,6 +105,49 @@
     });
   });
 
+  /* ---- background video: autoplay + crossfade at the halfway scroll point ---- */
+  (function setupBgVideo() {
+    var v1 = document.getElementById('bgv1');
+    var v2 = document.getElementById('bgv2');
+    if (!v1 || !v2) return;
+
+    // Respect data-saver / reduced-motion: keep the still poster frames, no playback.
+    var conn = navigator.connection || {};
+    var saveData = conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '');
+    if (reduceMotion || saveData) return;
+
+    function safePlay(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    safePlay(v1);
+
+    var loaded2 = false, current = 1, ticking = false;
+
+    function showSecond() {
+      if (!loaded2) { loaded2 = true; v2.load(); }
+      safePlay(v2);
+      v2.classList.add('is-active');
+      v1.classList.remove('is-active');
+      setTimeout(function () { if (current === 2) v1.pause(); }, 1300);
+    }
+    function showFirst() {
+      safePlay(v1);
+      v1.classList.add('is-active');
+      v2.classList.remove('is-active');
+      setTimeout(function () { if (current === 1) v2.pause(); }, 1300);
+    }
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var prog = max > 0 ? window.scrollY / max : 0;
+        if (prog > 0.5 && current === 1) { current = 2; showSecond(); }
+        else if (prog <= 0.46 && current === 2) { current = 1; showFirst(); }
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
   /* ---- contact form: native submit to FormSubmit (works on every device/browser) ---- */
   var form = document.getElementById('lmkForm');
   var statusEl = document.getElementById('formStatus');

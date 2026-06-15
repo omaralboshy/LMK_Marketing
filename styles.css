@@ -43,6 +43,14 @@ button{font-family:inherit;border:none;background:none;cursor:none}
 .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(120% 90% at 50% 0%,transparent 55%,rgba(0,0,0,.55) 100%);}
 
+/* background video */
+.bg-video{position:fixed;inset:0;z-index:-3;overflow:hidden;background:#050505}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  transition:opacity 1.2s ease;will-change:opacity}
+.bgv.is-active{opacity:1}
+.bg-scrim{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(5,5,5,.9),rgba(5,5,5,.8) 42%,rgba(5,5,5,.82) 62%,rgba(5,5,5,.94))}
+
 /* custom cursor */
 .cursor{position:fixed;top:0;left:0;width:26px;height:26px;border:1px solid rgba(255,255,255,.5);
   border-radius:50%;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);
