@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lmk-marketing.vercel.app/sitemap.xml

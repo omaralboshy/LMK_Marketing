@@ -11,6 +11,30 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  if (reduceMotion) document.documentElement.classList.add('reduce-motion');
+
+  /* keep keyboard focus inside an open dialog (menu, reel) */
+  function focusables(root) {
+    return $$('a[href], button:not([disabled]), input, textarea, video[controls], [tabindex]:not([tabindex="-1"])', root)
+      .filter(function (el) { return el.offsetParent !== null || el === document.activeElement; });
+  }
+  function trapTab(root, e) {
+    if (e.key !== 'Tab') return;
+    var f = focusables(root); if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  function setInert(on) {
+    [$('#main'), $('footer'), $('#nav'), $('#waFab'), $('#motionToggle')].forEach(function (el) {
+      if (!el) return; if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert');
+    });
+  }
+
+  /* ---- global motion switch (the "Pause animations" button) ---- */
+  var motionPaused = false;
+  var motionListeners = [];
+  function onMotion(fn) { motionListeners.push(fn); }
 
   /* ---- current year ---- */
   var yr = $('#yr');
@@ -68,31 +92,34 @@
   var nav = $('#nav');
   var lastY = window.scrollY;
 
-  /* ---- mobile menu (full-screen overlay, works at any scroll position) ---- */
+  /* ---- mobile menu (full-screen overlay with its own Close button) ---- */
   var burger = $('#burger');
   var mobileMenu = $('#mobileMenu');
-  function closeMenu() {
-    if (!mobileMenu) return;
-    nav.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    document.body.classList.remove('menu-open');
-    burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Open menu');
-    mobileMenu.setAttribute('aria-hidden', 'true');
+  var menuClose = $('#menuClose');
+  function setMenu(open, returnFocus) {
+    if (!mobileMenu || !burger) return;
+    nav.classList.toggle('open', open);
+    nav.classList.remove('hide');
+    mobileMenu.classList.toggle('open', open);
+    document.body.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    setInert(open);
+    if (open) setTimeout(function () { if (menuClose) menuClose.focus(); }, 380);
+    else if (returnFocus) burger.focus({ preventScroll: true });
   }
   if (burger && mobileMenu) {
-    burger.addEventListener('click', function () {
-      var willOpen = !mobileMenu.classList.contains('open');
-      nav.classList.toggle('open', willOpen);
-      nav.classList.remove('hide');
-      mobileMenu.classList.toggle('open', willOpen);
-      document.body.classList.toggle('menu-open', willOpen);
-      burger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      burger.setAttribute('aria-label', willOpen ? 'Close menu' : 'Open menu');
-      mobileMenu.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
+    burger.addEventListener('click', function () { setMenu(!mobileMenu.classList.contains('open'), false); });
+    if (menuClose) menuClose.addEventListener('click', function () { setMenu(false, true); });
+    $$('a', mobileMenu).forEach(function (a) { a.addEventListener('click', function () { setMenu(false, false); }); });
+    document.addEventListener('keydown', function (e) {
+      if (!mobileMenu.classList.contains('open')) return;
+      if (e.key === 'Escape') setMenu(false, true);
+      else trapTab(mobileMenu, e);
     });
-    $$('a', mobileMenu).forEach(function (a) { a.addEventListener('click', closeMenu); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 760 && mobileMenu.classList.contains('open')) setMenu(false, false);
+    });
   }
 
   /* ---- active nav link ---- */
@@ -315,9 +342,17 @@
     var conn = navigator.connection || {};
     var saveData = conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '');
     if (reduceMotion || saveData) return null;   // keep still poster frames
-    function safePlay(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    function safePlay(v) { if (motionPaused) return; var p = v.play(); if (p && p.catch) p.catch(function () {}); }
     safePlay(v1);
     var loaded2 = false, current = 1;
+    onMotion(function (paused) {
+      var v = current === 1 ? v1 : v2;
+      if (paused) { v1.pause(); v2.pause(); } else safePlay(v);
+    });
+    document.addEventListener('visibilitychange', function () {
+      var v = current === 1 ? v1 : v2;
+      if (document.hidden) v.pause(); else safePlay(v);
+    });
     return function (prog) {
       if (prog > 0.5 && current === 1) {
         current = 2;
@@ -337,6 +372,7 @@
   var edgeLine = $('#edgeLine'), principles = $('#principles');
   var ctaMark = $('.cta-mark'), ctaBand = $('.cta-band');
   var waFab = $('#waFab'), contact = $('#contact');
+  var bgWrap = $('#bgVideo'), heroEl = $('#top'), workEl = $('#work'), bgStrength = -1;
   var ticking = false;
   function onScroll() {
     var y = window.scrollY, vh = window.innerHeight;
@@ -382,6 +418,14 @@
       waFab.classList.toggle('show', y > vh * 0.7 && !contactVisible);
     }
 
+    // video strength: vivid behind the hero, faint behind reading sections so text stays crisp
+    if (bgWrap) {
+      var s = 0.12;
+      if (heroEl && heroEl.getBoundingClientRect().bottom > vh * 0.45) s = 0.45;
+      else if (workEl) { var wr = workEl.getBoundingClientRect(); if (wr.top < vh * 0.55 && wr.bottom > vh * 0.45) s = 0.3; }
+      if (s !== bgStrength) { bgStrength = s; bgWrap.style.setProperty('--bgv', s); }
+    }
+
     if (bgv) bgv(prog);
     ticking = false;
   }
@@ -403,6 +447,7 @@
     var prevY = window.scrollY, vel = 0, skew = 0;
     window.addEventListener('scroll', function () { vel = window.scrollY - prevY; prevY = window.scrollY; }, { passive: true });
     (function loop() {
+      if (motionPaused) { requestAnimationFrame(loop); return; }
       var boost = Math.min(8, Math.abs(vel) * 0.25);
       skew += (clamp(vel * 0.45, -12, 12) - skew) * 0.12;
       state.forEach(function (s) {
@@ -428,15 +473,20 @@
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('menu-open');
+      setInert(true);
       try { video.currentTime = 0; } catch (e) {}
       video.muted = false;
       var p = video.play(); if (p && p.catch) p.catch(function () {});
-      if (close) setTimeout(function () { close.focus(); }, 50);
+      if (close) {
+        close.focus({ preventScroll: true });                     // visibility switches instantly, so this lands now
+        if (document.activeElement !== close) requestAnimationFrame(function () { close.focus({ preventScroll: true }); });
+      }
     }
     function shut() {
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('menu-open');
+      setInert(false);
       video.pause();
       trigger.focus();
     }
@@ -444,7 +494,32 @@
     if (close) close.addEventListener('click', shut);
     if (backdrop) backdrop.addEventListener('click', shut);
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && modal.classList.contains('open')) shut();
+      if (!modal.classList.contains('open')) return;
+      if (e.key === 'Escape') shut(); else trapTab(modal, e);
+    });
+  })();
+
+  /* ---- "Pause animations" button: stops videos, marquee, aurora and the 3D scene ---- */
+  (function setupMotionToggle() {
+    var btn = $('#motionToggle'), label = $('#motionLabel');
+    if (!btn) return;
+    if (reduceMotion) { btn.hidden = true; return; }   // nothing moves already
+    // phones: the button lives in the top bar next to the menu button so it never covers text
+    var mq = window.matchMedia('(max-width: 760px)');
+    var home = btn.parentNode, burgerBtn = $('#burger');
+    function place() {
+      if (mq.matches && burgerBtn) burgerBtn.parentNode.insertBefore(btn, burgerBtn);
+      else if (btn.parentNode !== home) home.insertBefore(btn, $('#waFab'));
+    }
+    place();
+    if (mq.addEventListener) mq.addEventListener('change', place); else mq.addListener(place);
+    btn.addEventListener('click', function () {
+      motionPaused = !motionPaused;
+      document.documentElement.classList.toggle('motion-paused', motionPaused);
+      btn.setAttribute('data-paused', motionPaused ? 'true' : 'false');
+      if (label) label.textContent = motionPaused ? 'Play animations' : 'Pause animations';
+      motionListeners.forEach(function (fn) { fn(motionPaused); });
+      window.dispatchEvent(new CustomEvent('lmk:motion', { detail: { paused: motionPaused } }));
     });
   })();
 

@@ -6,6 +6,8 @@
 <title>LMK Marketing — Create. Capture. Elevate.</title>
 <meta name="description" content="LMK Marketing is a UAE creative studio producing premium content, cinematic video and short-form that makes brands look as good as they are — and turns attention into customers." />
 <meta name="theme-color" content="#2F0960" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta name="format-detection" content="telephone=no" />
 <link rel="canonical" href="https://lmk-marketing.vercel.app/" />
 
 <!-- social share -->
@@ -16,6 +18,7 @@
 <meta property="og:image" content="https://lmk-marketing.vercel.app/og-image.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="LMK Marketing logo — white LMK letters on deep purple with the tagline Create. Capture. Elevate." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://lmk-marketing.vercel.app/og-image.jpg" />
 
@@ -36,7 +39,7 @@
 <body>
 
 <!-- ============ ICON SPRITE ============ -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
   <defs>
     <symbol id="lmk-mark" viewBox="0 0 795 284"><path d="M0,0 L41,0 L41,242 L233,242 L233,283 L0,283Z M217,0 L217,57 L364,206 L476,96 L476,283 L517,283 L517,0 L365,150Z M793,0 L739,0 L570,171 L570,225Z M647,188 L739,283 L794,283 L674,162Z"/></symbol>
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.2 1 .5 1.4 1 .5.4.8.8 1 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-1 1.4-.4.5-.8.8-1.4 1-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-1-.5-.4-.8-.8-1-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 1-1.4.4-.5.8-.8 1.4-1 .4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.9c-3.1 0-3.5 0-4.7.1-.9 0-1.4.2-1.7.3-.4.2-.7.4-1 .7-.3.3-.5.6-.7 1-.1.3-.3.8-.3 1.7-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c0 .9.2 1.4.3 1.7.2.4.4.7.7 1 .3.3.6.5 1 .7.3.1.8.3 1.7.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c.9 0 1.4-.2 1.7-.3.4-.2.7-.4 1-.7.3-.3.5-.6.7-1 .1-.3.3-.8.3-1.7.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-.9-.2-1.4-.3-1.7-.2-.4-.4-.7-.7-1-.3-.3-.6-.5-1-.7-.3-.1-.8-.3-1.7-.3-1.2-.1-1.6-.1-4.7-.1m0 3.3a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2m0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6m5.8-7.8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0"/></symbol>
@@ -66,15 +69,15 @@
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <!-- background video: fixed behind everything, purple duotone, crossfades to the 2nd clip past the halfway point -->
-<div class="bg-video" aria-hidden="true">
+<div class="bg-video" id="bgVideo" aria-hidden="true">
   <div class="bgv-layer is-active" id="bgl1">
-    <div class="bgv-fill" style="background-image:url('bg1-poster.jpg')"></div>
+    <div class="bgv-fill bgv-fill-1"></div>
     <video class="bgv" id="bgv1" muted loop playsinline preload="auto" poster="bg1-poster.jpg">
       <source src="bg1.mp4" type="video/mp4">
     </video>
   </div>
   <div class="bgv-layer" id="bgl2">
-    <div class="bgv-fill" style="background-image:url('bg2-poster.jpg')"></div>
+    <div class="bgv-fill bgv-fill-2"></div>
     <video class="bgv" id="bgv2" muted loop playsinline preload="none" poster="bg2-poster.jpg">
       <source src="bg2.mp4" type="video/mp4">
     </video>
@@ -83,6 +86,9 @@
   <div class="bg-scrim"></div>
   <div class="aurora" id="aurora"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
 </div>
+
+<!-- 3D scene (custom WebGL, no libraries) -->
+<canvas class="gl3d" id="gl3d" aria-hidden="true"></canvas>
 
 <!-- atmosphere -->
 <div class="grain" aria-hidden="true"></div>
@@ -107,9 +113,9 @@
         <a href="#work" class="roll"><span data-text="Work">Work</span></a>
       </div>
       <div class="nav-socials">
-        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" aria-label="Instagram" class="ic"><svg width="17" height="17"><use href="#i-ig"/></svg></a>
-        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" aria-label="TikTok" class="ic"><svg width="17" height="17"><use href="#i-tt"/></svg></a>
-        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" aria-label="YouTube" class="ic"><svg width="17" height="17"><use href="#i-yt"/></svg></a>
+        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="ic"><svg width="17" height="17"><use href="#i-ig"/></svg></a>
+        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="ic"><svg width="17" height="17"><use href="#i-tt"/></svg></a>
+        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="ic"><svg width="17" height="17"><use href="#i-yt"/></svg></a>
       </div>
       <a href="#contact" class="btn btn-primary btn-sm" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Start a project">Start a project</span></a>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
@@ -118,20 +124,24 @@
 </nav>
 
 <!-- MOBILE MENU (separate from nav so it always covers the full screen) -->
-<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Site menu">
   <svg class="mm-bgmark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
+  <div class="mm-top">
+    <a href="#top" class="logo" aria-label="LMK Marketing home"><svg class="logo-mark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg></a>
+    <button class="mm-close" id="menuClose" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg><span>Close</span></button>
+  </div>
   <nav class="mm-links" aria-label="Mobile">
-    <a href="#about" style="--i:0">About</a>
-    <a href="#services" style="--i:1">Services</a>
-    <a href="#industries" style="--i:2">Industries</a>
-    <a href="#work" style="--i:3">Work</a>
-    <a href="#contact" class="mm-cta" style="--i:4">Start a project</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#industries">Industries</a>
+    <a href="#work">Work</a>
+    <a href="#contact" class="mm-cta">Start a project</a>
   </nav>
   <div class="mm-socials">
-    <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" aria-label="Instagram"><svg width="22" height="22"><use href="#i-ig"/></svg></a>
-    <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" aria-label="TikTok"><svg width="22" height="22"><use href="#i-tt"/></svg></a>
-    <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" aria-label="YouTube"><svg width="22" height="22"><use href="#i-yt"/></svg></a>
-    <a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="22" height="22"><use href="#i-wa"/></svg></a>
+    <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="22" height="22"><use href="#i-ig"/></svg></a>
+    <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg width="22" height="22"><use href="#i-tt"/></svg></a>
+    <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg width="22" height="22"><use href="#i-yt"/></svg></a>
+    <a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg width="22" height="22"><use href="#i-wa"/></svg></a>
   </div>
 </div>
 
@@ -152,10 +162,13 @@
     </p>
     <div class="hero-cta reveal" data-d="4">
       <a href="#contact" class="btn btn-primary" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Start a project">Start a project</span><svg class="btn-ic" width="18" height="18"><use href="#i-arrow"/></svg></a>
-      <a href="#work" class="btn btn-ghost" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="See the work">See the work</span></a>
+      <a href="#work" class="btn btn-ghost" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="See our work">See our work</span></a>
     </div>
   </div>
-  <svg class="hero-mark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
+  <!-- the 3D logo is drawn here (the outline SVG is the fallback when WebGL is off) -->
+  <div class="hero-stage" id="heroStage" aria-hidden="true">
+    <svg class="hero-mark" id="heroMark" viewBox="0 0 795 284"><use href="#lmk-mark"/></svg>
+  </div>
   <div class="scroll-hint reveal" data-d="4"><span>Scroll</span><i></i></div>
 </header>
 
@@ -190,9 +203,9 @@
     </p>
 
     <div class="facts">
-      <div class="fact reveal" data-d="1"><span class="fact-num" data-scramble="Five">Five</span><span class="fact-lab">operators, one tight team</span></div>
-      <div class="fact reveal" data-d="2"><span class="fact-num" data-scramble="UAE">UAE</span><span class="fact-lab">based &amp; on the ground</span></div>
-      <div class="fact reveal" data-d="3"><span class="fact-num"><span data-count="100">100</span>%</span><span class="fact-lab">in-house, start to finish</span></div>
+      <div class="fact reveal" data-d="1"><span class="fact-num"><span class="sr-only">Five</span><span aria-hidden="true" data-scramble="Five">Five</span></span><span class="fact-lab">operators, one tight team</span></div>
+      <div class="fact reveal" data-d="2"><span class="fact-num"><span class="sr-only">UAE</span><span aria-hidden="true" data-scramble="UAE">UAE</span></span><span class="fact-lab">based &amp; on the ground</span></div>
+      <div class="fact reveal" data-d="3"><span class="fact-num"><span class="sr-only">100%</span><span aria-hidden="true"><span data-count="100">100</span>%</span></span><span class="fact-lab">in-house, start to finish</span></div>
     </div>
   </div>
 </section>
@@ -329,7 +342,7 @@
         <p class="sec-lead reveal" data-d="2">Our feeds are full of the content, edits and cinematic video we deliver for brands like yours. Scroll through, feel the quality, and picture your business in that light — then let's make it happen.</p>
       </div>
 
-      <button class="reel-trigger reveal" data-d="2" id="reelTrigger" data-magnetic data-cursor="Watch" aria-label="Watch the reel">
+      <button class="reel-trigger reveal" data-d="2" id="reelTrigger" data-magnetic data-cursor="Watch" aria-label="Watch our showreel (video with sound)">
         <svg class="reel-ring" viewBox="0 0 200 200" aria-hidden="true">
           <defs><path id="reelCircle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
           <text><textPath href="#reelCircle">WATCH THE REEL ✦ WATCH THE REEL ✦ WATCH THE REEL ✦ </textPath></text>
@@ -339,21 +352,21 @@
     </div>
 
     <div class="platforms">
-      <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="platform tilt reveal" data-cursor="View">
+      <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener noreferrer" class="platform tilt reveal" data-cursor="View">
         <span class="platform-ic"><svg width="26" height="26"><use href="#i-ig"/></svg></span>
         <span class="platform-name">Instagram</span>
         <span class="platform-go">View feed <svg width="16" height="16"><use href="#i-arrow"/></svg></span>
         <div class="card-glow"></div>
       </a>
 
-      <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="platform tilt reveal" data-d="1" data-cursor="View">
+      <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener noreferrer" class="platform tilt reveal" data-d="1" data-cursor="View">
         <span class="platform-ic"><svg width="26" height="26"><use href="#i-tt"/></svg></span>
         <span class="platform-name">TikTok</span>
         <span class="platform-go">View feed <svg width="16" height="16"><use href="#i-arrow"/></svg></span>
         <div class="card-glow"></div>
       </a>
 
-      <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="platform tilt reveal" data-d="2" data-cursor="Watch">
+      <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener noreferrer" class="platform tilt reveal" data-d="2" data-cursor="Watch">
         <span class="platform-ic"><svg width="26" height="26"><use href="#i-yt"/></svg></span>
         <span class="platform-name">YouTube</span>
         <span class="platform-go">Watch <svg width="16" height="16"><use href="#i-arrow"/></svg></span>
@@ -395,29 +408,35 @@
         </a>
       </div>
 
-      <a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener" class="wa-btn" data-magnetic data-cursor="Chat">
+      <a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer" class="wa-btn" data-magnetic data-cursor="Chat">
         <svg width="20" height="20" aria-hidden="true"><use href="#i-wa"/></svg>
         Chat on WhatsApp
       </a>
 
       <div class="contact-socials">
-        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="soc" aria-label="Instagram" data-magnetic><svg width="20" height="20"><use href="#i-ig"/></svg></a>
-        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="soc" aria-label="TikTok" data-magnetic><svg width="20" height="20"><use href="#i-tt"/></svg></a>
-        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="soc" aria-label="YouTube" data-magnetic><svg width="20" height="20"><use href="#i-yt"/></svg></a>
+        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener noreferrer" class="soc" aria-label="Instagram" data-magnetic><svg width="20" height="20"><use href="#i-ig"/></svg></a>
+        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener noreferrer" class="soc" aria-label="TikTok" data-magnetic><svg width="20" height="20"><use href="#i-tt"/></svg></a>
+        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener noreferrer" class="soc" aria-label="YouTube" data-magnetic><svg width="20" height="20"><use href="#i-yt"/></svg></a>
       </div>
     </div>
 
-    <form class="form reveal" data-d="1" id="lmkForm" action="https://formsubmit.co/lmkwhat2026@gmail.com" method="POST">
+    <form class="form reveal" data-d="1" id="lmkForm" action="https://formsubmit.co/lmkwhat2026@gmail.com" method="POST" accept-charset="UTF-8">
+      <!-- FormSubmit settings (see HOW-TO-UPDATE: swap the email in "action" for your private FormSubmit alias) -->
       <input type="hidden" name="_subject" value="New project enquiry — LMK Marketing">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://lmk-marketing.vercel.app/?sent=1#contact">
       <div class="form-glow" aria-hidden="true"></div>
-      <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required></div>
-      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@brand.com" autocomplete="email" required></div>
-      <div class="field"><label for="brand">Brand / business</label><input id="brand" name="brand" type="text" placeholder="What's it called?" autocomplete="organization"></div>
-      <div class="field"><label for="message">What do you want people to feel?</label><textarea id="message" name="message" placeholder="Tell us about the brand, the goal and the timeline…" required></textarea></div>
-      <button type="submit" class="btn btn-primary form-btn" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Send it">Send it</span><svg class="btn-ic" width="18" height="18"><use href="#i-arrow"/></svg></button>
+      <p class="form-req" id="formReq">All fields are required unless marked optional.</p>
+      <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" maxlength="100" required aria-describedby="formReq"></div>
+      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@brand.com" autocomplete="email" maxlength="254" inputmode="email" required></div>
+      <div class="field"><label for="brand">Brand / business <span class="opt">(optional)</span></label><input id="brand" name="brand" type="text" placeholder="What's it called?" autocomplete="organization" maxlength="120"></div>
+      <div class="field"><label for="message">What do you want people to feel?</label><textarea id="message" name="message" placeholder="Tell us about the brand, the goal and the timeline…" maxlength="3000" required aria-describedby="msgHelp"></textarea><span class="help" id="msgHelp">Please don't include passwords, payment details or other sensitive personal information.</span></div>
+      <div class="consent">
+        <input type="checkbox" id="consent" name="consent" value="Yes — agreed to the Privacy Policy" required>
+        <label for="consent">I agree that LMK Marketing may use these details to reply to my enquiry, as described in the <a href="/privacy" class="link-u">Privacy Policy</a>.</label>
+      </div>
+      <button type="submit" class="btn btn-primary form-btn" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Send message">Send message</span><svg class="btn-ic" width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       <div class="form-status" id="formStatus" role="status" aria-live="polite" hidden>
         <svg class="fs-check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
         <span class="fs-msg" id="formStatusMsg"></span>
@@ -432,16 +451,23 @@
 <!-- reel lightbox -->
 <div class="reel-modal" id="reelModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="LMK showreel">
   <div class="reel-backdrop" id="reelBackdrop"></div>
-  <button class="reel-close" id="reelClose" aria-label="Close reel"><svg viewBox="0 0 24 24" width="18" height="18"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <button class="reel-close" id="reelClose" type="button" aria-label="Close showreel"><svg viewBox="0 0 24 24" width="18" height="18"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
   <div class="reel-frame">
-    <video id="reelVideo" playsinline controls preload="none" poster="reel-poster.jpg">
+    <video id="reelVideo" playsinline controls preload="none" poster="reel-poster.jpg" aria-label="LMK Marketing showreel">
       <source src="reel.mp4" type="video/mp4">
     </video>
   </div>
 </div>
 
+<!-- pause / play all motion (WCAG 2.2.2) -->
+<button class="motion-toggle" id="motionToggle" type="button" data-paused="false">
+  <svg class="mt-pause" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+  <svg class="mt-play" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+  <span id="motionLabel">Pause animations</span>
+</button>
+
 <!-- floating WhatsApp -->
-<a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener" class="wa-fab" id="waFab" aria-label="Chat with LMK on WhatsApp" data-cursor="Chat">
+<a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer" class="wa-fab" id="waFab" aria-label="Chat with LMK on WhatsApp" data-cursor="Chat">
   <svg width="26" height="26" aria-hidden="true"><use href="#i-wa"/></svg>
 </a>
 
@@ -450,30 +476,41 @@
   <div class="wrap">
     <div class="footer-top">
       <div>
-        <a href="#top" class="logo footer-logo" aria-label="Back to top">
+        <a href="#top" class="logo footer-logo" aria-label="LMK Marketing, back to top">
           <svg class="logo-mark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
           <span class="logo-word">Marketing</span>
         </a>
         <p class="footer-tag">Create. Capture. Elevate.</p>
+        <p class="footer-sub">Premium content, engineered to convert.</p>
       </div>
-      <div class="footer-socials">
-        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="roll"><span data-text="Instagram">Instagram</span></a>
-        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="roll"><span data-text="TikTok">TikTok</span></a>
-        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="roll"><span data-text="YouTube">YouTube</span></a>
-        <a href="mailto:lmkwhat2026@gmail.com" class="roll"><span data-text="Email">Email</span></a>
-      </div>
+      <nav class="footer-cols" aria-label="Footer">
+        <div class="footer-socials">
+          <span class="fcol-h">Follow</span>
+          <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener noreferrer" class="roll"><span data-text="Instagram">Instagram</span></a>
+          <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener noreferrer" class="roll"><span data-text="TikTok">TikTok</span></a>
+          <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener noreferrer" class="roll"><span data-text="YouTube">YouTube</span></a>
+          <a href="mailto:lmkwhat2026@gmail.com" class="roll"><span data-text="Email">Email</span></a>
+        </div>
+        <div class="footer-socials">
+          <span class="fcol-h">Legal</span>
+          <a href="/privacy" class="roll"><span data-text="Privacy Policy">Privacy Policy</span></a>
+          <a href="/terms" class="roll"><span data-text="Terms &amp; Conditions">Terms &amp; Conditions</span></a>
+          <a href="/cookies" class="roll"><span data-text="Cookie Policy">Cookie Policy</span></a>
+        </div>
+      </nav>
     </div>
     <div class="footer-word" id="footerWord" aria-hidden="true">
       <svg class="fw-outline" viewBox="-4 -4 803 292"><use href="#lmk-mark"/></svg>
       <svg class="fw-fill" viewBox="-4 -4 803 292"><use href="#lmk-mark"/></svg>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="yr">2026</span> LMK Marketing — UAE</span>
-      <span>Premium content, engineered to convert.</span>
+      <span>© <span id="yr">2026</span> LMK MARKETING FZC LLC. All rights reserved.</span>
+      <span>Licensed by Ajman NuVentures Centre Free Zone · License No. 2629216987888 · Amber Gem Tower, Ajman, UAE</span>
     </div>
   </div>
 </footer>
 
 <script src="app.js"></script>
+<script type="module" src="lmk3d.js"></script>
 </body>
 </html>
