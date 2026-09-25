@@ -2,31 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>LMK Marketing — Create. Capture. Elevate.</title>
 <meta name="description" content="LMK Marketing is a UAE creative studio producing premium content, cinematic video and short-form that makes brands look as good as they are — and turns attention into customers." />
-<meta name="theme-color" content="#050505" />
+<meta name="theme-color" content="#2F0960" />
+<link rel="canonical" href="https://lmk-marketing.vercel.app/" />
+
+<!-- social share -->
 <meta property="og:title" content="LMK Marketing — Create. Capture. Elevate." />
 <meta property="og:description" content="Premium content, cinematic video and short-form that turns attention into customers." />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://lmk-marketing.vercel.app/" />
+<meta property="og:image" content="https://lmk-marketing.vercel.app/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://lmk-marketing.vercel.app/og-image.jpg" />
 
-<!-- favicons -->
+<!-- favicons (new purple LMK mark) -->
 <link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="bg1-poster.jpg">
 
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- preloader -->
-<div class="preloader" id="preloader">
+<!-- ============ ICON SPRITE ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="lmk-mark" viewBox="0 0 795 284"><path d="M0,0 L41,0 L41,242 L233,242 L233,283 L0,283Z M217,0 L217,57 L364,206 L476,96 L476,283 L517,283 L517,0 L365,150Z M793,0 L739,0 L570,171 L570,225Z M647,188 L739,283 L794,283 L674,162Z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.2 1 .5 1.4 1 .5.4.8.8 1 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-1 1.4-.4.5-.8.8-1.4 1-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-1-.5-.4-.8-.8-1-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 1-1.4.4-.5.8-.8 1.4-1 .4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.9c-3.1 0-3.5 0-4.7.1-.9 0-1.4.2-1.7.3-.4.2-.7.4-1 .7-.3.3-.5.6-.7 1-.1.3-.3.8-.3 1.7-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c0 .9.2 1.4.3 1.7.2.4.4.7.7 1 .3.3.6.5 1 .7.3.1.8.3 1.7.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c.9 0 1.4-.2 1.7-.3.4-.2.7-.4 1-.7.3-.3.5-.6.7-1 .1-.3.3-.8.3-1.7.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-.9-.2-1.4-.3-1.7-.2-.4-.4-.7-.7-1-.3-.3-.6-.5-1-.7-.3-.1-.8-.3-1.7-.3-1.2-.1-1.6-.1-4.7-.1m0 3.3a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2m0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6m5.8-7.8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0"/></symbol>
+    <symbol id="i-tt" viewBox="0 0 24 24"><path fill="currentColor" d="M16.6 5.8a4.8 4.8 0 0 1-1-1.3 4.7 4.7 0 0 1-.5-2h-3.3v13.1a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.7a6 6 0 0 0-.78-.05A5.9 5.9 0 1 0 15 15.5V8.9a8 8 0 0 0 4.7 1.5V7.1a4.7 4.7 0 0 1-3.1-1.3"/></symbol>
+    <symbol id="i-yt" viewBox="0 0 24 24"><path fill="currentColor" d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 0 0 1 7.5C.5 9.4.5 12 .5 12s0 2.6.5 4.5a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5M9.8 15.5v-7l5.8 3.5-5.8 3.5"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.9 1.13-.17.19-.33.21-.62.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.04-.17-.29-.02-.45.13-.6.13-.13.3-.34.45-.51.15-.17.2-.29.3-.48.1-.19.05-.36-.02-.51-.08-.15-.64-1.55-.88-2.12-.23-.56-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.77.36-.26.29-1.01.99-1.01 2.41 0 1.42 1.04 2.8 1.18 2.99.15.19 2.04 3.12 4.95 4.38.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.12.56-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M8 7h9v9"/></symbol>
+  </defs>
+</svg>
+
+<!-- preloader: the LMK mark assembles, then a diagonal wipe reveals the site -->
+<div class="preloader" id="preloader" aria-hidden="true">
   <div class="pl-inner">
-    <div class="pl-logo">LMK<span>·</span></div>
+    <svg class="pl-mark" viewBox="0 0 795 284" aria-hidden="true">
+      <path class="pl-p pl-l" d="M0,0 L41,0 L41,242 L233,242 L233,283 L0,283Z"/>
+      <path class="pl-p pl-m" d="M217,0 L217,57 L364,206 L476,96 L476,283 L517,283 L517,0 L365,150Z"/>
+      <path class="pl-p pl-k1" d="M793,0 L739,0 L570,171 L570,225Z"/>
+      <path class="pl-p pl-k2" d="M647,188 L739,283 L794,283 L674,162Z"/>
+    </svg>
+    <div class="pl-word">MARKETING</div>
     <div class="pl-bar"><span id="plFill"></span></div>
     <div class="pl-count"><span id="plCount">0</span>%</div>
   </div>
@@ -35,7 +65,7 @@
 <!-- scroll progress -->
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-<!-- background video: fixed behind everything, crossfades to the 2nd clip past the halfway point -->
+<!-- background video: fixed behind everything, purple duotone, crossfades to the 2nd clip past the halfway point -->
 <div class="bg-video" aria-hidden="true">
   <div class="bgv-layer is-active" id="bgl1">
     <div class="bgv-fill" style="background-image:url('bg1-poster.jpg')"></div>
@@ -49,88 +79,99 @@
       <source src="bg2.mp4" type="video/mp4">
     </video>
   </div>
+  <div class="bg-tint"></div>
   <div class="bg-scrim"></div>
+  <div class="aurora" id="aurora"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
 </div>
 
-<!-- grain + vignette overlays -->
+<!-- atmosphere -->
 <div class="grain" aria-hidden="true"></div>
-<div class="vignette" aria-hidden="true"></div>
 <div class="cursor" id="cursor" aria-hidden="true"><span class="cur-label" id="curLabel"></span></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <!-- NAV -->
-<nav class="nav" id="nav">
+<nav class="nav" id="nav" aria-label="Main">
   <div class="wrap nav-inner">
-    <a href="#top" class="logo" aria-label="LMK Marketing home">LMK<span>·</span></a>
+    <a href="#top" class="logo" aria-label="LMK Marketing home">
+      <svg class="logo-mark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
+      <span class="logo-word">Marketing</span>
+    </a>
 
     <div class="nav-right">
       <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#industries">Industries</a>
-        <a href="#work">Work</a>
+        <a href="#about" class="roll"><span data-text="About">About</span></a>
+        <a href="#services" class="roll"><span data-text="Services">Services</span></a>
+        <a href="#industries" class="roll"><span data-text="Industries">Industries</span></a>
+        <a href="#work" class="roll"><span data-text="Work">Work</span></a>
       </div>
       <div class="nav-socials">
-        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" aria-label="Instagram" class="ic">
-          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.2 1 .5 1.4 1 .5.4.8.8 1 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-1 1.4-.4.5-.8.8-1.4 1-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-1-.5-.4-.8-.8-1-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 1-1.4.4-.5.8-.8 1.4-1 .4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.9c-3.1 0-3.5 0-4.7.1-.9 0-1.4.2-1.7.3-.4.2-.7.4-1 .7-.3.3-.5.6-.7 1-.1.3-.3.8-.3 1.7-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c0 .9.2 1.4.3 1.7.2.4.4.7.7 1 .3.3.6.5 1 .7.3.1.8.3 1.7.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c.9 0 1.4-.2 1.7-.3.4-.2.7-.4 1-.7.3-.3.5-.6.7-1 .1-.3.3-.8.3-1.7.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-.9-.2-1.4-.3-1.7-.2-.4-.4-.7-.7-1-.3-.3-.6-.5-1-.7-.3-.1-.8-.3-1.7-.3-1.2-.1-1.6-.1-4.7-.1m0 3.3a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2m0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6m5.8-7.8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0"/></svg>
-        </a>
-        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" aria-label="TikTok" class="ic">
-          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M16.6 5.8a4.8 4.8 0 0 1-1-1.3 4.7 4.7 0 0 1-.5-2h-3.3v13.1a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.7a6 6 0 0 0-.78-.05A5.9 5.9 0 1 0 15 15.5V8.9a8 8 0 0 0 4.7 1.5V7.1a4.7 4.7 0 0 1-3.1-1.3"/></svg>
-        </a>
-        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" aria-label="YouTube" class="ic">
-          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 0 0 1 7.5C.5 9.4.5 12 .5 12s0 2.6.5 4.5a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5M9.8 15.5v-7l5.8 3.5-5.8 3.5"/></svg>
-        </a>
+        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" aria-label="Instagram" class="ic"><svg width="17" height="17"><use href="#i-ig"/></svg></a>
+        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" aria-label="TikTok" class="ic"><svg width="17" height="17"><use href="#i-tt"/></svg></a>
+        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" aria-label="YouTube" class="ic"><svg width="17" height="17"><use href="#i-yt"/></svg></a>
       </div>
-      <a href="#contact" class="btn-nav" data-magnetic>Start a project</a>
-      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <a href="#contact" class="btn btn-primary btn-sm" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Start a project">Start a project</span></a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
 <!-- MOBILE MENU (separate from nav so it always covers the full screen) -->
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <nav class="mm-links">
-    <a href="#about">About</a>
-    <a href="#services">Services</a>
-    <a href="#industries">Industries</a>
-    <a href="#work">Work</a>
-    <a href="#contact" class="mm-cta">Start a project</a>
+  <svg class="mm-bgmark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
+  <nav class="mm-links" aria-label="Mobile">
+    <a href="#about" style="--i:0">About</a>
+    <a href="#services" style="--i:1">Services</a>
+    <a href="#industries" style="--i:2">Industries</a>
+    <a href="#work" style="--i:3">Work</a>
+    <a href="#contact" class="mm-cta" style="--i:4">Start a project</a>
   </nav>
   <div class="mm-socials">
-    <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.2 1 .5 1.4 1 .5.4.8.8 1 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-1 1.4-.4.5-.8.8-1.4 1-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-1-.5-.4-.8-.8-1-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 1-1.4.4-.5.8-.8 1.4-1 .4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.9c-3.1 0-3.5 0-4.7.1-.9 0-1.4.2-1.7.3-.4.2-.7.4-1 .7-.3.3-.5.6-.7 1-.1.3-.3.8-.3 1.7-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c0 .9.2 1.4.3 1.7.2.4.4.7.7 1 .3.3.6.5 1 .7.3.1.8.3 1.7.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c.9 0 1.4-.2 1.7-.3.4-.2.7-.4 1-.7.3-.3.5-.6.7-1 .1-.3.3-.8.3-1.7.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-.9-.2-1.4-.3-1.7-.2-.4-.4-.7-.7-1-.3-.3-.6-.5-1-.7-.3-.1-.8-.3-1.7-.3-1.2-.1-1.6-.1-4.7-.1m0 3.3a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2m0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6m5.8-7.8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0"/></svg></a>
-    <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M16.6 5.8a4.8 4.8 0 0 1-1-1.3 4.7 4.7 0 0 1-.5-2h-3.3v13.1a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.7a6 6 0 0 0-.78-.05A5.9 5.9 0 1 0 15 15.5V8.9a8 8 0 0 0 4.7 1.5V7.1a4.7 4.7 0 0 1-3.1-1.3"/></svg></a>
-    <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 0 0 1 7.5C.5 9.4.5 12 .5 12s0 2.6.5 4.5a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5M9.8 15.5v-7l5.8 3.5-5.8 3.5"/></svg></a>
+    <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" aria-label="Instagram"><svg width="22" height="22"><use href="#i-ig"/></svg></a>
+    <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" aria-label="TikTok"><svg width="22" height="22"><use href="#i-tt"/></svg></a>
+    <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" aria-label="YouTube"><svg width="22" height="22"><use href="#i-yt"/></svg></a>
+    <a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="22" height="22"><use href="#i-wa"/></svg></a>
   </div>
 </div>
+
+<main id="main">
 
 <!-- HERO -->
 <header class="hero" id="top">
   <div class="wrap hero-inner">
     <span class="eyebrow reveal">LMK Marketing — United Arab Emirates</span>
-    <h1 class="hero-title">
-      <span class="line reveal" data-d="1">Create.</span>
-      <span class="line reveal" data-d="2">Capture.</span>
-      <span class="line reveal" data-d="3">Elevate.</span>
+    <h1 class="hero-title" aria-label="Create. Capture. Elevate.">
+      <span class="line" data-split>Create.</span>
+      <span class="line" data-split>Capture.</span>
+      <span class="line line-accent" data-split>Elevate.</span>
     </h1>
     <p class="hero-sub reveal" data-d="4">
       A UAE creative studio producing premium content, sharp edits and cinematic video that makes
       your brand look exactly as good as it is — and turns attention into real customers.
     </p>
     <div class="hero-cta reveal" data-d="4">
-      <a href="#contact" class="btn btn-chrome" data-magnetic>Start a project</a>
-      <a href="#work" class="btn btn-line" data-magnetic>See the work</a>
+      <a href="#contact" class="btn btn-primary" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Start a project">Start a project</span><svg class="btn-ic" width="18" height="18"><use href="#i-arrow"/></svg></a>
+      <a href="#work" class="btn btn-ghost" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="See the work">See the work</span></a>
     </div>
   </div>
+  <svg class="hero-mark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
   <div class="scroll-hint reveal" data-d="4"><span>Scroll</span><i></i></div>
 </header>
 
-<!-- kinetic marquee -->
-<div class="marquee" id="marquee" aria-hidden="true">
-  <div class="marquee-track" id="marqueeTrack">
-    <span>Create.</span><b>✦</b><span>Capture.</span><b>✦</b><span>Elevate.</span><b>✦</b>
-    <span>Create.</span><b>✦</b><span>Capture.</span><b>✦</b><span>Elevate.</span><b>✦</b>
-    <span>Create.</span><b>✦</b><span>Capture.</span><b>✦</b><span>Elevate.</span><b>✦</b>
-    <span>Create.</span><b>✦</b><span>Capture.</span><b>✦</b><span>Elevate.</span><b>✦</b>
-  </div>
+<!-- kinetic marquee (two rows, opposite directions) -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-row"><div class="marquee-track" data-dir="-1">
+    <span>Create.</span><b></b><span>Capture.</span><b></b><span>Elevate.</span><b></b>
+    <span>Create.</span><b></b><span>Capture.</span><b></b><span>Elevate.</span><b></b>
+    <span>Create.</span><b></b><span>Capture.</span><b></b><span>Elevate.</span><b></b>
+    <span>Create.</span><b></b><span>Capture.</span><b></b><span>Elevate.</span><b></b>
+  </div></div>
+  <div class="marquee-row outline"><div class="marquee-track" data-dir="1">
+    <span>Content</span><b></b><span>Cinematic video</span><b></b><span>Short-form</span><b></b><span>Sharp edits</span><b></b>
+    <span>Content</span><b></b><span>Cinematic video</span><b></b><span>Short-form</span><b></b><span>Sharp edits</span><b></b>
+    <span>Content</span><b></b><span>Cinematic video</span><b></b><span>Short-form</span><b></b><span>Sharp edits</span><b></b>
+  </div></div>
 </div>
 
 <!-- ABOUT / MANIFESTO -->
@@ -138,9 +179,9 @@
   <div class="wrap">
     <span class="eyebrow reveal">Who we are</span>
     <h2 class="big-statement reveal" data-d="1">
-      We don't chase trends.<br><span class="chrome-text">We build brands that lead.</span>
+      We don't chase trends.<br><span class="grad-text">We build brands that lead.</span>
     </h2>
-    <p class="about-body reveal" data-d="2">
+    <p class="about-body" data-words>
       LMK Marketing is a UAE creative studio. From scroll-stopping content and razor-sharp edits
       to cinematic video and the social presence that carries your brand every day — we craft work
       that doesn't just look premium, it earns trust and brings customers to your door. Every project
@@ -149,9 +190,9 @@
     </p>
 
     <div class="facts">
-      <div class="fact reveal" data-d="1"><span class="fact-num chrome-text">Five</span><span class="fact-lab">operators, one tight team</span></div>
-      <div class="fact reveal" data-d="2"><span class="fact-num chrome-text">UAE</span><span class="fact-lab">based &amp; on the ground</span></div>
-      <div class="fact reveal" data-d="3"><span class="fact-num chrome-text">100%</span><span class="fact-lab">in-house, start to finish</span></div>
+      <div class="fact reveal" data-d="1"><span class="fact-num" data-scramble="Five">Five</span><span class="fact-lab">operators, one tight team</span></div>
+      <div class="fact reveal" data-d="2"><span class="fact-num" data-scramble="UAE">UAE</span><span class="fact-lab">based &amp; on the ground</span></div>
+      <div class="fact reveal" data-d="3"><span class="fact-num"><span data-count="100">100</span>%</span><span class="fact-lab">in-house, start to finish</span></div>
     </div>
   </div>
 </section>
@@ -161,40 +202,40 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow reveal">What we do</span>
-      <h2 class="sec-title reveal" data-d="1">Tailored to your niche.<br>Never one-size-fits-all.</h2>
-      <p class="sec-lead reveal" data-d="2">We don't sell packages. We choose the format that makes your specific brand impossible to scroll past.</p>
+      <h2 class="sec-title reveal" data-d="1">Tailored to your niche.<br>Never <span class="nowrap">one-size-fits-all.</span></h2>
+      <p class="sec-lead reveal" data-d="2">Every brand gets its own format. We choose the one that makes your specific brand impossible to scroll past.</p>
     </div>
 
     <div class="grid">
-      <article class="card reveal" data-magnetic>
-        <span class="card-idx">01</span>
+      <article class="card tilt reveal" data-cursor="Explore">
+        <div class="card-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 10v3M6 6v11M10 3v18M14 8v7M18 5v13M22 10v3"/></svg></div>
         <h3>Cinematic ASMR &amp; Sensory Proof</h3>
         <p>Pure audio and macro-visuals. We capture the raw texture of food, product and craftsmanship — the sizzle, the pour, the grain — to trigger immediate cravings and build undeniable trust.</p>
-        <span class="card-tag">Macro · Sound design · Texture</span>
+        <ul class="card-tags"><li>Macro</li><li>Sound design</li><li>Texture</li></ul>
         <div class="card-glow"></div>
       </article>
 
-      <article class="card reveal" data-d="1" data-magnetic>
-        <span class="card-idx">02</span>
+      <article class="card tilt reveal" data-d="1" data-cursor="Explore">
+        <div class="card-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9M12.4 3.4l3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></div>
         <h3>Heritage &amp; Lifestyle Storytelling</h3>
         <p>Documentary-style short-form that puts your roots on screen: uncompromised sourcing, the craft, and the people behind the business. The story only you can tell.</p>
-        <span class="card-tag">Documentary · Brand roots · People</span>
+        <ul class="card-tags"><li>Documentary</li><li>Brand roots</li><li>People</li></ul>
         <div class="card-glow"></div>
       </article>
 
-      <article class="card reveal" data-d="2" data-magnetic>
-        <span class="card-idx">03</span>
+      <article class="card tilt reveal" data-d="2" data-cursor="Explore">
+        <div class="card-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1M12 18h1M7 18h1"/></svg></div>
         <h3>B2B Scale &amp; Industrial Storytelling</h3>
         <p>High-speed time-lapses and operational breakdowns that prove capacity to corporate buyers. Built for factories, auto garages and printing houses — operations that need to look as serious as they are.</p>
-        <span class="card-tag">Time-lapse · Capacity · B2B</span>
+        <ul class="card-tags"><li>Time-lapse</li><li>Capacity</li><li>B2B</li></ul>
         <div class="card-glow"></div>
       </article>
 
-      <article class="card reveal" data-d="3" data-magnetic>
-        <span class="card-idx">04</span>
+      <article class="card tilt reveal" data-d="3" data-cursor="Explore">
+        <div class="card-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M22 6l-3-3"/></svg></div>
         <h3>Operational Marketing</h3>
         <p>We run the entire production timeline flawlessly. We arrive 45 minutes early, execute without disrupting your business, and deliver high-fidelity assets on schedule. You keep working — we handle the rest.</p>
-        <span class="card-tag">Production · Logistics · Delivery</span>
+        <ul class="card-tags"><li>Production</li><li>Logistics</li><li>Delivery</li></ul>
         <div class="card-glow"></div>
       </article>
     </div>
@@ -211,45 +252,45 @@
     </div>
 
     <div class="ind-grid">
-      <div class="ind reveal" data-magnetic>
-        <span class="ind-ic" aria-hidden="true">🍽️</span>
+      <div class="ind tilt reveal">
+        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></span>
         <h3>Restaurants &amp; F&amp;B</h3>
         <p>Food that sizzles on screen and fills tables.</p>
         <div class="card-glow"></div>
       </div>
-      <div class="ind reveal" data-d="1" data-magnetic>
-        <span class="ind-ic" aria-hidden="true">🛍️</span>
+      <div class="ind tilt reveal" data-d="1">
+        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4ZM3 6h18M16 10a4 4 0 0 1-8 0"/></svg></span>
         <h3>Retail &amp; E-commerce</h3>
         <p>Product content that converts scrolls into sales.</p>
         <div class="card-glow"></div>
       </div>
-      <div class="ind reveal" data-d="2" data-magnetic>
-        <span class="ind-ic" aria-hidden="true">🚗</span>
+      <div class="ind tilt reveal" data-d="2">
+        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></span>
         <h3>Automotive &amp; Garages</h3>
         <p>Builds, details and workshops that command respect.</p>
         <div class="card-glow"></div>
       </div>
-      <div class="ind reveal" data-magnetic>
-        <span class="ind-ic" aria-hidden="true">🏗️</span>
+      <div class="ind tilt reveal">
+        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35ZM6 18h12M6 14h12"/><path d="M6 22V10h12v12"/></svg></span>
         <h3>Industrial &amp; Factories</h3>
         <p>Capacity and craft, proven to corporate buyers.</p>
         <div class="card-glow"></div>
       </div>
-      <div class="ind reveal" data-d="1" data-magnetic>
-        <span class="ind-ic" aria-hidden="true">🏡</span>
+      <div class="ind tilt reveal" data-d="1">
+        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5M10 21v-6h4v6"/></svg></span>
         <h3>Real Estate</h3>
         <p>Spaces shot to sell — and to be remembered.</p>
         <div class="card-glow"></div>
       </div>
-      <div class="ind reveal" data-d="2" data-magnetic>
-        <span class="ind-ic" aria-hidden="true">💎</span>
+      <div class="ind tilt reveal" data-d="2">
+        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9ZM11 3 8 9l4 13 4-13-3-6M2 9h20"/></svg></span>
         <h3>Beauty &amp; Lifestyle</h3>
         <p>Premium visuals that build aspiration and trust.</p>
         <div class="card-glow"></div>
       </div>
     </div>
 
-    <p class="ind-foot reveal">…and if your industry isn't on the list, that's exactly the kind of challenge we like. <a href="#contact">Tell us about it →</a></p>
+    <p class="ind-foot reveal">…and if your industry isn't on the list, that's exactly the kind of challenge we like. <a href="#contact" class="link-u">Tell us about it</a></p>
   </div>
 </section>
 
@@ -260,7 +301,8 @@
       <span class="eyebrow reveal">The LMK edge</span>
       <h2 class="sec-title reveal" data-d="1">Run like an operation,<br>not an agency.</h2>
     </div>
-    <div class="principles">
+    <div class="principles" id="principles">
+      <span class="principles-line" aria-hidden="true"><i id="edgeLine"></i></span>
       <div class="principle reveal">
         <h3>Radical transparency</h3>
         <p>You see the plan, the schedule and the deliverables up front. No black boxes, no surprises, no vague invoices.</p>
@@ -280,34 +322,41 @@
 <!-- WORK / SOCIAL PROOF -->
 <section class="work" id="work">
   <div class="wrap work-inner">
-    <span class="eyebrow reveal">The work</span>
-    <h2 class="sec-title reveal" data-d="1">Don't take our word for it.<br>Watch it.</h2>
-    <p class="sec-lead reveal" data-d="2">Our feeds are full of the content, edits and cinematic video we deliver for brands like yours. Scroll through, feel the quality, and picture your business in that light — then let's make it happen.</p>
+    <div class="work-head">
+      <div>
+        <span class="eyebrow reveal">The work</span>
+        <h2 class="sec-title reveal" data-d="1">Don't take our word for it.<br>Watch it.</h2>
+        <p class="sec-lead reveal" data-d="2">Our feeds are full of the content, edits and cinematic video we deliver for brands like yours. Scroll through, feel the quality, and picture your business in that light — then let's make it happen.</p>
+      </div>
 
-    <button class="reel-trigger reveal" data-d="2" id="reelTrigger" data-magnetic data-cursor="Watch">
-      <span class="reel-play" aria-hidden="true">▶</span>
-      <span class="reel-label">Watch the reel</span>
-    </button>
+      <button class="reel-trigger reveal" data-d="2" id="reelTrigger" data-magnetic data-cursor="Watch" aria-label="Watch the reel">
+        <svg class="reel-ring" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="reelCircle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <text><textPath href="#reelCircle">WATCH THE REEL ✦ WATCH THE REEL ✦ WATCH THE REEL ✦ </textPath></text>
+        </svg>
+        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+    </div>
 
     <div class="platforms">
-      <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="platform reveal" data-magnetic>
-        <span class="platform-ic"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.2 1 .5 1.4 1 .5.4.8.8 1 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-1 1.4-.4.5-.8.8-1.4 1-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-1-.5-.4-.8-.8-1-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 1-1.4.4-.5.8-.8 1.4-1 .4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.9c-3.1 0-3.5 0-4.7.1-.9 0-1.4.2-1.7.3-.4.2-.7.4-1 .7-.3.3-.5.6-.7 1-.1.3-.3.8-.3 1.7-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c0 .9.2 1.4.3 1.7.2.4.4.7.7 1 .3.3.6.5 1 .7.3.1.8.3 1.7.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c.9 0 1.4-.2 1.7-.3.4-.2.7-.4 1-.7.3-.3.5-.6.7-1 .1-.3.3-.8.3-1.7.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-.9-.2-1.4-.3-1.7-.2-.4-.4-.7-.7-1-.3-.3-.6-.5-1-.7-.3-.1-.8-.3-1.7-.3-1.2-.1-1.6-.1-4.7-.1m0 3.3a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2m0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6m5.8-7.8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0"/></svg></span>
+      <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="platform tilt reveal" data-cursor="View">
+        <span class="platform-ic"><svg width="26" height="26"><use href="#i-ig"/></svg></span>
         <span class="platform-name">Instagram</span>
-        <span class="platform-go">View feed ↗</span>
+        <span class="platform-go">View feed <svg width="16" height="16"><use href="#i-arrow"/></svg></span>
         <div class="card-glow"></div>
       </a>
 
-      <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="platform reveal" data-d="1" data-magnetic>
-        <span class="platform-ic"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M16.6 5.8a4.8 4.8 0 0 1-1-1.3 4.7 4.7 0 0 1-.5-2h-3.3v13.1a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.7a6 6 0 0 0-.78-.05A5.9 5.9 0 1 0 15 15.5V8.9a8 8 0 0 0 4.7 1.5V7.1a4.7 4.7 0 0 1-3.1-1.3"/></svg></span>
+      <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="platform tilt reveal" data-d="1" data-cursor="View">
+        <span class="platform-ic"><svg width="26" height="26"><use href="#i-tt"/></svg></span>
         <span class="platform-name">TikTok</span>
-        <span class="platform-go">View feed ↗</span>
+        <span class="platform-go">View feed <svg width="16" height="16"><use href="#i-arrow"/></svg></span>
         <div class="card-glow"></div>
       </a>
 
-      <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="platform reveal" data-d="2" data-magnetic>
-        <span class="platform-ic"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 0 0 1 7.5C.5 9.4.5 12 .5 12s0 2.6.5 4.5a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5M9.8 15.5v-7l5.8 3.5-5.8 3.5"/></svg></span>
+      <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="platform tilt reveal" data-d="2" data-cursor="Watch">
+        <span class="platform-ic"><svg width="26" height="26"><use href="#i-yt"/></svg></span>
         <span class="platform-name">YouTube</span>
-        <span class="platform-go">Watch ↗</span>
+        <span class="platform-go">Watch <svg width="16" height="16"><use href="#i-arrow"/></svg></span>
         <div class="card-glow"></div>
       </a>
     </div>
@@ -316,9 +365,10 @@
 
 <!-- CTA -->
 <section class="cta-band">
+  <svg class="cta-mark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
   <div class="wrap">
-    <h2 class="cta-title reveal">Let's make something<br><span class="chrome-text">worth watching.</span></h2>
-    <a href="#contact" class="btn btn-chrome reveal" data-d="1" data-magnetic>Start a project</a>
+    <h2 class="cta-title reveal">Let's make something<br><span class="grad-text">worth watching.</span></h2>
+    <a href="#contact" class="btn btn-primary btn-lg reveal" data-d="1" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Start a project">Start a project</span><svg class="btn-ic" width="20" height="20"><use href="#i-arrow"/></svg></a>
   </div>
 </section>
 
@@ -345,15 +395,15 @@
         </a>
       </div>
 
-      <a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener" class="wa-btn" data-magnetic>
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.15-1.7-.84-1.96-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.9 1.13-.17.19-.33.21-.62.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.04-.17-.29-.02-.45.13-.6.13-.13.3-.34.45-.51.15-.17.2-.29.3-.48.1-.19.05-.36-.02-.51-.08-.15-.64-1.55-.88-2.12-.23-.56-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.77.36-.26.29-1.01.99-1.01 2.41 0 1.42 1.04 2.8 1.18 2.99.15.19 2.04 3.12 4.95 4.38.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.12.56-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2"/></svg>
+      <a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener" class="wa-btn" data-magnetic data-cursor="Chat">
+        <svg width="20" height="20" aria-hidden="true"><use href="#i-wa"/></svg>
         Chat on WhatsApp
       </a>
 
       <div class="contact-socials">
-        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="soc" data-magnetic><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.2 1 .5 1.4 1 .5.4.8.8 1 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-1 1.4-.4.5-.8.8-1.4 1-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-1-.5-.4-.8-.8-1-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 1-1.4.4-.5.8-.8 1.4-1 .4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.9c-3.1 0-3.5 0-4.7.1-.9 0-1.4.2-1.7.3-.4.2-.7.4-1 .7-.3.3-.5.6-.7 1-.1.3-.3.8-.3 1.7-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c0 .9.2 1.4.3 1.7.2.4.4.7.7 1 .3.3.6.5 1 .7.3.1.8.3 1.7.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c.9 0 1.4-.2 1.7-.3.4-.2.7-.4 1-.7.3-.3.5-.6.7-1 .1-.3.3-.8.3-1.7.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-.9-.2-1.4-.3-1.7-.2-.4-.4-.7-.7-1-.3-.3-.6-.5-1-.7-.3-.1-.8-.3-1.7-.3-1.2-.1-1.6-.1-4.7-.1m0 3.3a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2m0 7.6a3 3 0 1 1 0-6 3 3 0 0 1 0 6m5.8-7.8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0"/></svg></a>
-        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="soc" data-magnetic><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M16.6 5.8a4.8 4.8 0 0 1-1-1.3 4.7 4.7 0 0 1-.5-2h-3.3v13.1a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.7a6 6 0 0 0-.78-.05A5.9 5.9 0 1 0 15 15.5V8.9a8 8 0 0 0 4.7 1.5V7.1a4.7 4.7 0 0 1-3.1-1.3"/></svg></a>
-        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="soc" data-magnetic><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 0 0 1 7.5C.5 9.4.5 12 .5 12s0 2.6.5 4.5a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5M9.8 15.5v-7l5.8 3.5-5.8 3.5"/></svg></a>
+        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="soc" aria-label="Instagram" data-magnetic><svg width="20" height="20"><use href="#i-ig"/></svg></a>
+        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="soc" aria-label="TikTok" data-magnetic><svg width="20" height="20"><use href="#i-tt"/></svg></a>
+        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="soc" aria-label="YouTube" data-magnetic><svg width="20" height="20"><use href="#i-yt"/></svg></a>
       </div>
     </div>
 
@@ -362,46 +412,63 @@
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://lmk-marketing.vercel.app/?sent=1#contact">
-      <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required></div>
-      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@brand.com" required></div>
-      <div class="field"><label for="brand">Brand / business</label><input id="brand" name="brand" type="text" placeholder="What's it called?"></div>
+      <div class="form-glow" aria-hidden="true"></div>
+      <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required></div>
+      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@brand.com" autocomplete="email" required></div>
+      <div class="field"><label for="brand">Brand / business</label><input id="brand" name="brand" type="text" placeholder="What's it called?" autocomplete="organization"></div>
       <div class="field"><label for="message">What do you want people to feel?</label><textarea id="message" name="message" placeholder="Tell us about the brand, the goal and the timeline…" required></textarea></div>
-      <button type="submit" class="btn btn-chrome form-btn" data-magnetic>Send it</button>
-      <p class="form-status" id="formStatus" hidden></p>
-      <p class="form-note">Prefer email? <a href="mailto:lmkwhat2026@gmail.com">lmkwhat2026@gmail.com</a></p>
+      <button type="submit" class="btn btn-primary form-btn" data-magnetic><span class="btn-fill"></span><span class="btn-txt" data-text="Send it">Send it</span><svg class="btn-ic" width="18" height="18"><use href="#i-arrow"/></svg></button>
+      <div class="form-status" id="formStatus" role="status" aria-live="polite" hidden>
+        <svg class="fs-check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
+        <span class="fs-msg" id="formStatusMsg"></span>
+      </div>
+      <p class="form-note">Prefer email? <a href="mailto:lmkwhat2026@gmail.com" class="link-u">lmkwhat2026@gmail.com</a></p>
     </form>
   </div>
 </section>
 
+</main>
+
 <!-- reel lightbox -->
-<div class="reel-modal" id="reelModal" aria-hidden="true">
+<div class="reel-modal" id="reelModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="LMK showreel">
   <div class="reel-backdrop" id="reelBackdrop"></div>
-  <button class="reel-close" id="reelClose" aria-label="Close reel">✕</button>
+  <button class="reel-close" id="reelClose" aria-label="Close reel"><svg viewBox="0 0 24 24" width="18" height="18"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
   <div class="reel-frame">
-    <video id="reelVideo" playsinline controls preload="none" poster="bg1-poster.jpg">
+    <video id="reelVideo" playsinline controls preload="none" poster="reel-poster.jpg">
       <source src="reel.mp4" type="video/mp4">
     </video>
   </div>
 </div>
+
+<!-- floating WhatsApp -->
+<a href="https://wa.me/971509848582?text=Hi%20LMK%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener" class="wa-fab" id="waFab" aria-label="Chat with LMK on WhatsApp" data-cursor="Chat">
+  <svg width="26" height="26" aria-hidden="true"><use href="#i-wa"/></svg>
+</a>
 
 <!-- FOOTER -->
 <footer class="footer">
   <div class="wrap">
     <div class="footer-top">
       <div>
-        <div class="logo footer-logo">LMK<span>·</span></div>
+        <a href="#top" class="logo footer-logo" aria-label="Back to top">
+          <svg class="logo-mark" viewBox="0 0 795 284" aria-hidden="true"><use href="#lmk-mark"/></svg>
+          <span class="logo-word">Marketing</span>
+        </a>
         <p class="footer-tag">Create. Capture. Elevate.</p>
       </div>
       <div class="footer-socials">
-        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener">TikTok</a>
-        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener">YouTube</a>
-        <a href="mailto:lmkwhat2026@gmail.com">Email</a>
+        <a href="https://www.instagram.com/lmk_what?igsh=ejY4NjRza2V0NmU1" target="_blank" rel="noopener" class="roll"><span data-text="Instagram">Instagram</span></a>
+        <a href="https://www.tiktok.com/@lmk_what" target="_blank" rel="noopener" class="roll"><span data-text="TikTok">TikTok</span></a>
+        <a href="https://www.youtube.com/channel/UC8gbGH2aA3w4HJwGO7376sQ" target="_blank" rel="noopener" class="roll"><span data-text="YouTube">YouTube</span></a>
+        <a href="mailto:lmkwhat2026@gmail.com" class="roll"><span data-text="Email">Email</span></a>
       </div>
     </div>
-    <div class="footer-word" aria-hidden="true">LMK</div>
+    <div class="footer-word" id="footerWord" aria-hidden="true">
+      <svg class="fw-outline" viewBox="-4 -4 803 292"><use href="#lmk-mark"/></svg>
+      <svg class="fw-fill" viewBox="-4 -4 803 292"><use href="#lmk-mark"/></svg>
+    </div>
     <div class="footer-bottom">
-      <span>© <span id="yr"></span> LMK Marketing — UAE</span>
+      <span>© <span id="yr">2026</span> LMK Marketing — UAE</span>
       <span>Premium content, engineered to convert.</span>
     </div>
   </div>
