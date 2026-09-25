@@ -192,8 +192,16 @@ function init() {
     for (let i = 0; i < n; i++) { const name = gl.getActiveUniform(p, i).name; u[name] = gl.getUniformLocation(p, name); }
     return { p, u, aPos: gl.getAttribLocation(p, 'aPos'), aNor: gl.getAttribLocation(p, 'aNor'), aSeed: gl.getAttribLocation(p, 'aSeed') };
   }
-  let prog, pprog;
-  try { prog = program(VS, FS); pprog = program(PVS, PFS); } catch (e) { return; }   // fall back to the SVG logo
+  // "inside the screen" tunnel: glowing screen-shaped frames + rails, drawn as additive lines
+  const LVS = `
+    attribute vec3 aPos; uniform mat4 uView, uProj; uniform float uZ;
+    void main(){ gl_Position = uProj * uView * vec4(aPos.xy, aPos.z + uZ, 1.0); }`;
+  const LFS = `
+    precision mediump float; uniform vec4 uCol;
+    void main(){ gl_FragColor = vec4(uCol.rgb * uCol.a, uCol.a); }`;
+
+  let prog, pprog, lprog;
+  try { prog = program(VS, FS); pprog = program(PVS, PFS); lprog = program(LVS, LFS); } catch (e) { return; }   // fall back to the SVG logo
 
   function mesh(g) {
     const pb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, pb); gl.bufferData(gl.ARRAY_BUFFER, g.pos, gl.STATIC_DRAW);
@@ -247,6 +255,28 @@ function init() {
   let paused = false, visible = !document.hidden, t0 = performance.now(), tPaused = 0, pauseStart = 0, raf = 0, firstFrame = true;
   const model = new Float32Array(16), nrm = new Float32Array(9);
 
+  const T_NEAR = 9.2, T_FAR = -44, T_SP = 3.4, T_N = Math.ceil((T_NEAR - T_FAR) / T_SP);
+  const frameBuf = gl.createBuffer(), railBuf = gl.createBuffer();
+  let frameCount = 0, railCount = 0;
+  function buildTunnel(hw, hh) {
+    const r = Math.min(hw, hh) * 0.13, seg = 10, pts = [];
+    const corners = [[hw - r, hh - r, 0], [-hw + r, hh - r, Math.PI / 2], [-hw + r, -hh + r, Math.PI], [hw - r, -hh + r, Math.PI * 1.5]];
+    for (const [cx, cy, a0] of corners) for (let k = 0; k <= seg; k++) { const a = a0 + (k / seg) * Math.PI / 2; pts.push(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 0); }
+    gl.bindBuffer(gl.ARRAY_BUFFER, frameBuf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(pts), gl.STATIC_DRAW);
+    frameCount = pts.length / 3;
+    const rails = [], ix = hw - r * 0.29, iy = hh - r * 0.29;
+    for (const [sx, sy] of [[1, 1], [-1, 1], [-1, -1], [1, -1]]) rails.push(sx * ix, sy * iy, T_FAR, sx * ix, sy * iy, T_NEAR);
+    for (let k = -3; k <= 3; k++) {                   // faint floor + ceiling grid lines running into the distance
+      const x = (k / 3.6) * hw;
+      rails.push(x, -hh, T_FAR, x, -hh, T_NEAR, x, hh, T_FAR, x, hh, T_NEAR);
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, railBuf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rails), gl.STATIC_DRAW);
+    railCount = rails.length / 3;
+  }
+  // warp entrance: starts the moment the loading screen lifts
+  const preloaderEl = document.getElementById('preloader');
+  let warpStart = null;
+
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.5 : 1.75);
     W = window.innerWidth; H = window.innerHeight;
@@ -254,6 +284,7 @@ function init() {
     gl.viewport(0, 0, canvas.width, canvas.height);
     proj = M4.persp(FOV, W / H, 0.1, 60);
     upp = (2 * CAMZ * Math.tan(FOV / 2)) / H;           // world units per CSS pixel at z = 0
+    buildTunnel((W / 2) * upp * 0.95, (H / 2) * upp * 0.93);
   }
   resize();
   window.addEventListener('resize', resize);
@@ -293,9 +324,41 @@ function init() {
     const eye = [mx * 0.9, -my * 0.6, CAMZ];
     const view = M4.lookAt(eye, [0, 0, 0], [0, 1, 0]);
 
+    // warp: when the loading screen lifts, the camera dives into the screen
+    if (warpStart === null && (!preloaderEl || !preloaderEl.isConnected || preloaderEl.classList.contains('done'))) warpStart = t;
+    const wk = warpStart === null ? 0 : clamp((t - warpStart) / 1.9, 0, 1);
+    const warpEase = 1 - Math.pow(1 - wk, 3);
+    const intro = warpStart === null ? 0 : smooth(0, 1, (t - warpStart) / 1.7);
+
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST); gl.enable(gl.BLEND);
+
+    /* ---- the screen tunnel: frames shaped like this device's screen rush past as you scroll ---- */
+    gl.useProgram(lprog.p);
+    gl.blendFunc(gl.ONE, gl.ONE); gl.depthMask(false);
+    gl.uniformMatrix4fv(lprog.u.uView, false, view); gl.uniformMatrix4fv(lprog.u.uProj, false, proj);
+    gl.enableVertexAttribArray(lprog.aPos);
+    const travel = scrollY * upp * 0.55 + t * 0.35 + warpEase * 42;
+    const warpGlow = 1 + (1 - warpEase) * 2.2 * (warpStart === null ? 0 : 1);
+    const base = (mobile ? 0.3 : 0.4) * warpGlow;
+    const L = T_N * T_SP;
+    gl.bindBuffer(gl.ARRAY_BUFFER, frameBuf); gl.vertexAttribPointer(lprog.aPos, 3, gl.FLOAT, false, 0, 0);
+    for (let i = 0; i < T_N; i++) {
+      const z = T_FAR + (((i * T_SP + travel) % L) + L) % L;
+      // invisible far away, brightens as it approaches, fades just before it passes the camera
+      const a = base * smooth(-24, 3, z) * (1 - smooth(5.5, 9.1, z));
+      if (a < 0.004) continue;
+      gl.uniform4f(lprog.u.uCol, 0.78, 0.66, 1.0, a);
+      gl.uniform1f(lprog.u.uZ, z); gl.drawArrays(gl.LINE_LOOP, 0, frameCount);
+      gl.uniform1f(lprog.u.uZ, z + 0.02); gl.drawArrays(gl.LINE_LOOP, 0, frameCount);
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, railBuf); gl.vertexAttribPointer(lprog.aPos, 3, gl.FLOAT, false, 0, 0);
+    gl.uniform1f(lprog.u.uZ, 0);
+    gl.uniform4f(lprog.u.uCol, 0.62, 0.45, 1.0, (mobile ? 0.1 : 0.13) * warpGlow);
+    gl.drawArrays(gl.LINES, 0, railCount);
+    gl.disableVertexAttribArray(lprog.aPos);
+    gl.depthMask(true);
     gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
     gl.useProgram(prog.p);
@@ -330,9 +393,9 @@ function init() {
       let fx = 0, fy = 0, fS = aS;
       if (fw) { fS = fw.w; fx = fw.x + p.cx * fS; fy = fw.y + p.cy * fS; }
 
-      let x = lerp(ax, ex, e), y = lerp(ay, ey, e), z = lerp(0, p.ez, e) + sway;
+      let x = lerp(ax, ex, e), y = lerp(ay, ey, e), z = lerp(0, p.ez, e) + sway - (1 - intro) * (30 + i * 4);
       let s = lerp(aS, expScale, e);
-      let rx = lerp(aRx, eRx, e), ry = lerp(aRy, eRy, e), rz = lerp(aRz, eRz, e);
+      let rx = lerp(aRx, eRx, e), ry = lerp(aRy, eRy, e) + (1 - intro) * (2.4 + i * 0.5), rz = lerp(aRz, eRz, e) + (1 - intro) * (i % 2 ? 1.2 : -1.2);
       if (f > 0) {
         x = lerp(x, fx, f); y = lerp(y, fy, f); z = lerp(z, 0, f); s = lerp(s, fS, f);
         rx = lerp(rx, mx * 0.15, f); ry = lerp(ry, mx * 0.25, f); rz = lerp(rz, 0, f);
